@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: ascii-art
+  labels:
+    app: ascii-art
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: ascii-art
+  type: LoadBalancer
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: ascii-art
+  labels:
+    app: ascii-art
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: ascii-art
+  template:
+    metadata:
+      labels:
+        app: ascii-art
+    spec:
+      containers:
+        - name: ascii-art
+          image: msoap/ascii-art
+          ports:
+            - containerPort: 8080
